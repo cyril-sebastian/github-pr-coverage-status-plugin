@@ -84,7 +84,7 @@ public class CompareCoverageActionTest {
 
         coverageAction.perform(build, null, null, listener);
 
-        verify(pullRequestRepository).comment(ghRepository, 12, "[![0% (0.0%) vs master 0%](aaa/coverage-status-icon/?coverage=0.0&masterCoverage=0.0)](aaa/job/a)");
+        verify(pullRequestRepository).comment(ghRepository, 12, "[![0% (0.0%) vs master 0%](aaa/coverage-status-icon/?coverage=0.0&masterCoverage=0.0&targetBranch=master)](aaa/job/a)");
     }
 
     @Test
@@ -180,7 +180,7 @@ public class CompareCoverageActionTest {
 
         coverageAction.perform(build, null, null, listener);
 
-        verify(pullRequestRepository).comment(ghRepository, 12, "[![0% (0.0%) vs master 0%](customJ/coverage-status-icon/?coverage=0.0&masterCoverage=0.0)](aaa/job/a)");
+        verify(pullRequestRepository).comment(ghRepository, 12, "[![0% (0.0%) vs master 0%](customJ/coverage-status-icon/?coverage=0.0&masterCoverage=0.0&targetBranch=master)](aaa/job/a)");
     }
     
     private void prepareCoverageData(float masterCoverage, float prCoverage) throws IOException, InterruptedException {
@@ -204,9 +204,11 @@ public class CompareCoverageActionTest {
 
     private void prepareEnvVars() {
         String buildUrl = "aaa/job/a";
+        String targetBranch = "master";
         String prId = "12";
         when(envVars.get(PrIdAndUrlUtils.GIT_PR_ID_ENV_PROPERTY)).thenReturn(prId);
         when(envVars.get(Utils.BUILD_URL_ENV_PROPERTY)).thenReturn(buildUrl);
+        when(envVars.get(Utils.TARGET_BRANCH)).thenReturn(targetBranch);
         when(envVars.get(PrIdAndUrlUtils.GIT_URL_PROPERTY)).thenReturn(GIT_URL);
     }
 }
